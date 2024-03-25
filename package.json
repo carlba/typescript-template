@@ -16,7 +16,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "dist/index.js",
+    "start": "node dist/index.js",
     "start:dev": "tsx watch src/index.ts",
     "lint": "eslint **/*.ts",
     "format": "prettier --write .",
@@ -28,6 +28,7 @@
     "eslint": "^8.57.0",
     "husky": "^9.0.11",
     "prettier": "^3.2.5",
-    "tsx": "^4.7.1"
+    "tsx": "^4.7.1",
+    "typescript": "^5.4.3"
   }
 }
