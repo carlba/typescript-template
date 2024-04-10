@@ -1,1 +1,3 @@
-process.stdout.write('Hello World!' + '\n');
+export function helloWorld() {
+  return 'Hello World!';
+}
