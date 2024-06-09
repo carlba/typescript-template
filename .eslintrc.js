@@ -4,8 +4,11 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['**/*'],
+      files: ['**/*.js'],
       extends: ['eslint:recommended'],
+      parserOptions: {
+        ecmaVersion: 'latest',
+      },
     },
     {
       files: ['src**/*.ts'],
