@@ -5,4 +5,5 @@ export default {
   },
   moduleFileExtensions: ['ts', 'js', 'html'],
   coverageDirectory: '../coverage/typescript-template',
+  testPathIgnorePatterns: ['/node_modules/', '/dist/'], 
 };
