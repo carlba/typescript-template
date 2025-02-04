@@ -22,8 +22,7 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "dependency:update": "npx ncu -u -x eslint",
-    "bootstrap": "node bootstrap.js"
+    "dependency:update": "npx ncu -u -x eslint"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
