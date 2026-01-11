@@ -6,7 +6,8 @@
     "outDir": "./dist",
     "resolveJsonModule": true,
     "moduleResolution": "nodenext",
-    "verbatimModuleSyntax": true // Enforces .js for modules
+    "verbatimModuleSyntax": true, // Enforces .js for modules
+    "skipLibCheck": true
   },
   "include": ["src"],
   "exclude": ["node_modules"]

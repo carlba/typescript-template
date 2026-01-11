@@ -1,34 +1,21 @@
-import js from '@eslint/js';
+import eslint from '@eslint/js';
+import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
-export default [
+export default defineConfig(
   {
     ignores: ['dist/'],
   },
   {
-    files: ['**/*.{js,cjs}'],
+    files: ['**/*.js'],
     languageOptions: {
-      ecmaVersion: 2022,
-      sourceType: 'module',
       globals: {
+        console: 'readonly',
         process: 'readonly',
       },
     },
-    rules: {
-      ...js.configs.recommended.rules,
-    },
   },
-  {
-    files: ['src/**/*.ts'],
-    languageOptions: {
-      parser: tseslint.parser,
-      parserOptions: {
-        project: true,
-      },
-    },
-    rules: {
-      ...tseslint.configs['recommended-type-checked'].rules,
-      ...tseslint.configs['stylistic-type-checked'].rules,
-    },
-  },
-];
+  eslint.configs.recommended,
+  tseslint.configs.strict,
+  tseslint.configs.stylistic
+);
