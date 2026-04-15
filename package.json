@@ -2,7 +2,7 @@
   "name": "typescript-template",
   "description": "A short project description",
   "version": "0.0.1",
-  "private": false,
+  "private": true,
   "license": "UNLICENSED",
   "type": "module",
   "author": "carlba",
@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "start:dev": "nodemon -r dotenv/config -q src/index.ts",
+    "start:dev": "nodemon src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
@@ -29,7 +29,7 @@
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^25.5.2",
-    "dotenv": "^17.4.1",
+    "@vitest/coverage-v8": "^4.1.4",
     "eslint": "^9.39.2",
     "nodemon": "^3.1.14",
     "npm-check-updates": "^20.0.0",

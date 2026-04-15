@@ -1,0 +1,26 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: 'npm'
+      # --omit=optional skips platform-specific native bindings (e.g. pino's @emnapi/* packages)
+      # that are absent from the macOS-generated lock file but expected on Linux
+      - run: npm ci --omit=optional
+      - run: npm run lint
+      - run: npm test
+      - run: npm run build

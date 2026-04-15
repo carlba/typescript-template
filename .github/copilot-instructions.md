@@ -98,7 +98,8 @@ async function fetchUser(userId: string): Promise<User> {
 
 ### Environment Variables
 
-- Load environment variables via `dotenv` (already wired in `start:dev`).
+- In development, `tsx` automatically loads `.env` files. In production, environment variables are
+  injected by the platform. No `dotenv` dependency or extra flags needed.
 - Access `process.env` only through a dedicated, validated config module — never scattered inline.
 - Fail fast with a clear error if a required environment variable is missing at startup.
 
