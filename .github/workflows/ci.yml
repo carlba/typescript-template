@@ -18,9 +18,7 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-      # Use `npm install --no-optional` in CI to avoid cross-platform optional native
-      # bindings (e.g. pino's @emnapi/*) causing lockfile mismatch errors.
-      - run: npm install --no-optional --no-audit --no-fund
+      - run: npm ci
       - run: npm run lint
       - run: npm test
       - run: npm run build
