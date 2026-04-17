@@ -89,6 +89,10 @@ async function fetchUser(userId: string): Promise<User> {
 }
 ```
 
+### CLI tools
+
+Should use [Commander](https://www.npmjs.com/package/commander)
+
 ### Error Handling
 
 - Never silently swallow errors with empty `catch` blocks.

@@ -18,9 +18,9 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-      # --omit=optional skips platform-specific native bindings (e.g. pino's @emnapi/* packages)
-      # that are absent from the macOS-generated lock file but expected on Linux
-      - run: npm ci --omit=optional
+      # Use `npm install --no-optional` in CI to avoid cross-platform optional native
+      # bindings (e.g. pino's @emnapi/*) causing lockfile mismatch errors.
+      - run: npm install --no-optional --no-audit --no-fund
       - run: npm run lint
       - run: npm test
       - run: npm run build
