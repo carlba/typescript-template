@@ -4,9 +4,6 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   {
-    ignores: ['dist/'],
-  },
-  {
     files: ['**/*.js'],
     languageOptions: {
       globals: {
@@ -17,5 +14,13 @@ export default defineConfig(
   },
   eslint.configs.recommended,
   tseslint.configs.strict,
-  tseslint.configs.stylistic
+  tseslint.configs.stylistic,
+  {
+    ignores: ['dist/'],
+    rules: {
+      curly: ['error', 'all'],
+      'brace-style': ['error', '1tbs', { allowSingleLine: false }],
+      'id-length': ['error', { min: 2, exceptions: ['i', 'j', 'k'] }],
+    },
+  }
 );
