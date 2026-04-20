@@ -44,6 +44,7 @@ npm run format         # Format with Prettier
 - Use `const` by default; only use `let` when reassignment is necessary.
 - Prefer explicit return types on exported functions.
 - Use ESM imports (`import`/`export`) — this project uses `"type": "module"`.
+- Prefer named exports over default exports.
 
 ### Naming Conventions
 
@@ -102,8 +103,9 @@ Should use [Commander](https://www.npmjs.com/package/commander)
 
 ### Environment Variables
 
-- In development, `tsx` automatically loads `.env` files. In production, environment variables are
-  injected by the platform. No `dotenv` dependency or extra flags needed.
+- When running Node directly, prefer Node’s built-in `--env-file` parameter instead of a third-party
+  loader.
+- In production, environment variables should be injected by the platform or deployment environment.
 - Access `process.env` only through a dedicated, validated config module — never scattered inline.
 - Fail fast with a clear error if a required environment variable is missing at startup.
 

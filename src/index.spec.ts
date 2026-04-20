@@ -1,9 +1,22 @@
-import { describe, it, expect } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { helloWorld } from './index.js';
+vi.mock('pino', () => ({
+  default: vi.fn(() => ({
+    info: vi.fn(),
+    error: vi.fn(),
+    debug: vi.fn(),
+    warn: vi.fn(),
+  })),
+}));
 
 describe('helloWorld', () => {
-  it('should return "Hello World!"', () => {
-    expect(helloWorld()).toBe('Hello World!');
+  afterEach(() => {
+    vi.resetModules();
+  });
+
+  it('should return "Hello World!"', async () => {
+    process.env.NODE_ENV = 'test';
+    const { helloWorld } = await import('./index.js');
+    expect(helloWorld()).toBe('Hello World! NODE_ENV is test');
   });
 });
