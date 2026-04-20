@@ -28,13 +28,28 @@ npm run format         # Format with Prettier
   function needs a comment to explain what it does, rename it or split it.
 - **Avoid magic numbers/strings**: Extract constants with descriptive names instead of using bare
   literals.
-- **Prefer positive conditionals**: Write `if (isValid)` rather than `if (!isInvalid)`.
+- **Prefer positive conditionals**: Write `if (isValid)` rather than `if (!isInvalid)`.Æ
 - **Limit function arguments**: Prefer fewer than three parameters. When more are needed, group
   related arguments into a named options object.
 - **Don't repeat yourself**: Extract duplicated logic into well-named shared functions.
 - **Comment the "why", not the "what"**: Code should be self-documenting. Reserve comments for
   non-obvious decisions, trade-offs, or workarounds — not descriptions of what the code already
   shows.
+
+## Mandatory Post-Task Checklist
+
+After completing **any** task, coding change, or file modification, you MUST always run these
+commands in order before considering the task done:
+
+1. `npm run lint` — check for linting violations; fix any errors found
+2. `npm run build` — verify the project compiles successfully
+
+Do not mark a task as complete or stop until both commands pass without errors. If either command
+fails, fix the issue and re-run until both pass.
+
+## Other
+
+- Use try catch blocks when handling promises if there isn't a clear advantage of chaining.
 
 ### TypeScript
 
