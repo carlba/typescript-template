@@ -16,8 +16,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "start": "node --env-file .env dist/index.js",
-    "start:dev": "nodemon --exec \"node --env-file .env --loader tsx\" src/index.ts",
+    "build-watch": "tsc --watch",
+    "start": "node --env-file-if-exists dist/index.js",
+    "start:dev": "tsx --env-file-if-exists=.env --watch src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
@@ -30,16 +31,15 @@
   },
   "devDependencies": {
     "@tsconfig/node24": "^24.0.4",
-    "@types/node": "^25.5.2",
-    "@vitest/coverage-v8": "^4.1.4",
+    "@types/node": "^25.6.0",
+    "@vitest/coverage-v8": "^4.1.5",
     "eslint": "^9.39.2",
-    "nodemon": "^3.1.14",
-    "npm-check-updates": "^20.0.0",
-    "prettier": "^3.8.1",
+    "npm-check-updates": "^21.0.3",
+    "prettier": "^3.8.3",
     "tsx": "^4.21.0",
-    "typescript": "^6.0.2",
-    "typescript-eslint": "^8.58.0",
-    "vitest": "^4.1.3"
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.59.0",
+    "vitest": "^4.1.5"
   },
   "dependencies": {
     "pino": "^10.3.1",

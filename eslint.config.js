@@ -16,7 +16,7 @@ export default defineConfig(
   tseslint.configs.strict,
   tseslint.configs.stylistic,
   {
-    ignores: ['dist/'],
+    ignores: ['dist/', 'node_modules/'],
     rules: {
       curly: ['error', 'all'],
       'brace-style': ['error', '1tbs', { allowSingleLine: false }],
