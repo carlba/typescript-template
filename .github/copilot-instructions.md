@@ -71,7 +71,11 @@ fails, fix the issue and re-run until both pass.
 | Types                  | PascalCase                      | `ApiResponse`, `RequestOptions`         |
 | Files                  | kebab-case                      | `user-service.ts`, `parse-response.ts`  |
 
-## Best Practices
+## Conventions
+
+- All source code lives in `src/`.
+- Entry point is `src/index.ts`.
+- Prefer early returns to reduce nesting.
 
 ### HTTP Requests
 
@@ -106,7 +110,8 @@ async function fetchUser(userId: string): Promise<User> {
 
 ### CLI tools
 
-Should use [Commander](https://www.npmjs.com/package/commander)
+- Should use [Commander](https://www.npmjs.com/package/commander)
+- Should have a package entry point matching the project name and pointing to `dist/index.ts`
 
 ### Error Handling
 
@@ -130,9 +135,3 @@ Should use [Commander](https://www.npmjs.com/package/commander)
   `it('returns the user when the ID is valid', ...)`.
 - Prefer `vi.mock` for mocking external dependencies; avoid mocking internals.
 - Aim for meaningful coverage — test edge cases and error paths, not just the happy path.
-
-## Conventions
-
-- All source code lives in `src/`.
-- Entry point is `src/index.ts`.
-- Prefer early returns to reduce nesting.
