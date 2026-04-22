@@ -111,7 +111,10 @@ async function fetchUser(userId: string): Promise<User> {
 ### CLI tools
 
 - Should use [Commander](https://www.npmjs.com/package/commander)
-- Should have a package entry point matching the project name and pointing to `dist/index.ts`
+- Should have a package entry point matching the project name and pointing to`dist/cli.js`. The
+  `cli.js` file should be responsible of running constructing the CLI and running it.
+- To ensure that the package is possible to install using `npm link --local` a prepare package
+  script that executes `npm run build` is required.
 
 ### Error Handling
 

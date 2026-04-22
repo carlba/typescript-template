@@ -1,26 +1,25 @@
-import eslint from '@eslint/js';
+// @ts-check
+
+import js from '@eslint/js';
 import { defineConfig } from 'eslint/config';
 import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   {
-    files: ['**/*.js'],
-    languageOptions: {
-      globals: {
-        console: 'readonly',
-        process: 'readonly',
-      },
-    },
+    ignores: ['dist/', 'node_modules/', 'eslint.config.js', 'vitest.config.ts'], // acts as global ignores, due to the absence of other properties
   },
-  eslint.configs.recommended,
-  tseslint.configs.strict,
-  tseslint.configs.stylistic,
+  js.configs.recommended,
   {
-    ignores: ['dist/', 'node_modules/'],
-    rules: {
-      curly: ['error', 'all'],
-      'brace-style': ['error', '1tbs', { allowSingleLine: false }],
-      'id-length': ['error', { min: 2, exceptions: ['i', 'j', 'k'] }],
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      tseslint.configs.recommendedTypeChecked,
+      tseslint.configs.strictTypeChecked,
+      tseslint.configs.stylisticTypeChecked,
+    ],
+    languageOptions: {
+      parserOptions: {
+        projectService: true,
+      },
     },
   }
 );
