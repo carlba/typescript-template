@@ -1,22 +1,17 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('pino', () => ({
-  default: vi.fn(() => ({
-    info: vi.fn(),
-    error: vi.fn(),
-    debug: vi.fn(),
-    warn: vi.fn(),
-  })),
-}));
-
 describe('helloWorld', () => {
+  const originalNodeEnv = process.env.NODE_ENV;
+
   afterEach(() => {
     vi.resetModules();
+    process.env.NODE_ENV = originalNodeEnv;
   });
 
-  it('should return "Hello World!"', async () => {
+  it('returns a greeting containing NODE_ENV', async () => {
     process.env.NODE_ENV = 'test';
     const { helloWorld } = await import('./index.js');
+
     expect(helloWorld()).toBe('Hello World! NODE_ENV is test');
   });
 });

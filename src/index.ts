@@ -1,7 +1,7 @@
 import { fileURLToPath } from 'url';
+import { config, LOGGER } from './registry.js';
 
-import logger from './logger.js';
-import { config } from './config.js';
+const logger = LOGGER.child({ module: 'index' });
 
 export function helloWorld() {
   return `Hello World! NODE_ENV is ${config.NODE_ENV}`;
