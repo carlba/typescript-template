@@ -1,94 +1,77 @@
 # Project Guidelines
 
-## Project Overview
+## Overview
 
 This is a TypeScript project using ESM modules, Vitest for testing, ESLint + Prettier for code
 quality, and nodemon/tsx for development.
 
-## Build and Test
+## Commands
 
-```bash
-npm run build          # Compile TypeScript
-npm run start:dev      # Start with hot-reload (nodemon + tsx)
-npm test               # Run tests once (vitest)
-npm run test:watch     # Run tests in watch mode
-npm run test:coverage  # Run tests with coverage
-npm run lint           # Lint with ESLint
-npm run format         # Format with Prettier
-```
+- `npm run build` — compile TypeScript
+- `npm run start:dev` — start with hot reload
+- `npm test` — run tests once
+- `npm run test:watch` — watch tests
+- `npm run test:coverage` — test with coverage
+- `npm run lint` — lint the codebase
+- `npm run format` — format code with Prettier
 
 ## Code Style
 
-### Clean Code Principles
+### Clean code principles
 
-- **Meaningful names**: Every variable, function, parameter, and class name should clearly express
-  its intent. Never use single-letter variables except in regular for loops where i and k is OK.
-- **Functions do one thing**: Keep functions small and focused on a single responsibility. If a
-  function needs a comment to explain what it does, rename it or split it.
-- **Avoid magic numbers/strings**: Extract constants with descriptive names instead of using bare
-  literals.
-- **Prefer positive conditionals**: Write `if (isValid)` rather than `if (!isInvalid)`.
-- **Limit function arguments**: Prefer fewer than three parameters. When more are needed, group
-  related arguments into a named options object.
-- **Don't repeat yourself**: Extract duplicated logic into well-named shared functions.
-- **Comment the "why", not the "what"**: Code should be self-documenting. Reserve comments for
-  non-obvious decisions, trade-offs, or workarounds — not descriptions of what the code already
-  shows.
+- Use meaningful names for variables, functions, parameters, and classes.
+- Keep functions small and focused on a single responsibility.
+- Extract magic numbers and strings into named constants.
+- Prefer positive conditionals: `if (isValid)` instead of `if (!isInvalid)`.
+- Use fewer than three parameters when possible. If more are needed, use an options object.
+- Avoid duplicated logic by extracting shared helper functions.
+- Comment why a decision was made, not what the code already shows.
 
-## Mandatory Post-Task Checklist
+## Mandatory checklist
 
-After completing **any** task, coding change, or file modification, you MUST always run these
-commands in order before considering the task done:
+After any change, run these commands in order before considering the task done:
 
-1. `npm run lint` — check for linting violations; fix any errors found
-2. `npm run build` — verify the project compiles successfully
+1. Review `README.md` and update it if the change affects documentation or usage.
+2. `npm run lint`
+3. `npm run build`
 
-Do not mark a task as complete or stop until both commands pass without errors. If either command
-fails, fix the issue and re-run until both pass.
+Fix any failures and rerun both commands before completing the task.
 
-## Other
+## TypeScript rules
 
-- Use try catch blocks when handling promises if there isn't a clear advantage of chaining.
-
-### TypeScript
-
-- Use strict TypeScript — leverage the existing `tsconfig.json` settings.
+- Use strict TypeScript and follow `tsconfig.json`.
 - Prefer `interface` for object shapes and `type` for unions, intersections, and aliases.
-- Avoid `any`; use `unknown` when the type is genuinely uncertain and narrow it explicitly.
-- Use `const` by default; only use `let` when reassignment is necessary.
+- Avoid `any`; use `unknown` when the type is uncertain and narrow it explicitly.
+- Use `const` by default, and use `let` only when reassignment is necessary.
 - Prefer explicit return types on exported functions.
-- Use ESM imports (`import`/`export`) — this project uses `"type": "module"`.
+- Use ESM imports and exports.
 - Prefer named exports over default exports.
 
-### Naming Conventions
+## Naming conventions
 
 | Construct              | Convention                      | Example                                 |
 | ---------------------- | ------------------------------- | --------------------------------------- |
 | Variables / parameters | camelCase, descriptive nouns    | `userResponse`, `retryCount`            |
 | Functions              | camelCase, verb phrases         | `fetchUserProfile`, `parseErrorMessage` |
-| Classes / Interfaces   | PascalCase                      | `HttpClient`, `UserRepository`          |
+| Classes / interfaces   | PascalCase                      | `HttpClient`, `UserRepository`          |
 | Constants              | UPPER_SNAKE_CASE (module-level) | `MAX_RETRY_ATTEMPTS`                    |
 | Types                  | PascalCase                      | `ApiResponse`, `RequestOptions`         |
 | Files                  | kebab-case                      | `user-service.ts`, `parse-response.ts`  |
 
-## Conventions
+## Project conventions
 
-- All source code lives in `src/`.
-- Entry point is `src/index.ts`.
+- Keep all source code in `src/`.
 - Prefer early returns to reduce nesting.
 
-### HTTP Requests
+## HTTP requests
 
-- Use [`got`](https://github.com/sindresorhus/got) as the HTTP client. Do not use `fetch`, `axios`,
-  or `node-fetch`.
-- Prefer `got.extend()` to create pre-configured instances with shared base URLs, headers, and retry
-  logic.
-- Always type the response using the generic overload: `got<ResponseType>(url, options)`.
-- Handle HTTP errors with `got`'s built-in `HTTPError` — catch and re-throw with contextual
-  information.
+- Use [`got`](https://github.com/sindresorhus/got) as the HTTP client.
+- Do not use `fetch`, `axios`, or `node-fetch`.
+- Prefer `got.extend()` for shared base URLs, headers, and retry logic.
+- Type responses with `got<ResponseType>(url, options)`.
+- Catch `HTTPError` and rethrow it with contextual information.
 
 ```ts
-// Good
 import got, { HTTPError } from 'got';
 
 const apiClient = got.extend({
@@ -108,33 +91,29 @@ async function fetchUser(userId: string): Promise<User> {
 }
 ```
 
-### CLI tools
+## CLI tools
 
-- Should use [Commander](https://www.npmjs.com/package/commander)
-- Should have a package entry point matching the project name and pointing to`dist/cli.js`. The
-  `cli.js` file should be responsible of running constructing the CLI and running it.
-- To ensure that the package is possible to install using `npm link --local` a prepare package
-  script that executes `npm run build` is required.
+- Use [Commander](https://www.npmjs.com/package/commander).
+- The package entry point should match the project name and point to `dist/cli.js`.
+- `cli.js` should construct and run the CLI.
+- Include a `prepare` script that runs `npm run build` so local `npm link` works.
 
-### Error Handling
+## Error handling
 
-- Never silently swallow errors with empty `catch` blocks.
-- Wrap third-party errors with context before re-throwing.
-- Validate all external inputs (API responses, environment variables, CLI args) at system
-  boundaries.
+- Never swallow errors with empty `catch` blocks.
+- Wrap third-party errors with context before rethrowing.
+- Validate external inputs at system boundaries: API responses, environment variables, CLI args.
 
-### Environment Variables
+## Environment variables
 
-- When running Node directly, prefer Node’s built-in `--env-file` parameter instead of a third-party
-  loader.
-- In production, environment variables should be injected by the platform or deployment environment.
-- Access `process.env` only through a dedicated, validated config module — never scattered inline.
-- Fail fast with a clear error if a required environment variable is missing at startup.
+- Prefer Node’s built-in `--env-file` when running Node directly.
+- In production, inject environment variables from the hosting platform.
+- Access `process.env` only through a validated config module.
+- Fail fast if a required environment variable is missing.
 
-### Testing
+## Testing
 
-- Use Vitest for all tests. Test files are co-located with source files using the `.spec.ts` suffix.
-- Write tests that describe behavior, not implementation:
-  `it('returns the user when the ID is valid', ...)`.
-- Prefer `vi.mock` for mocking external dependencies; avoid mocking internals.
-- Aim for meaningful coverage — test edge cases and error paths, not just the happy path.
+- Use Vitest and colocate test files with source files using `.spec.ts`.
+- Write behavior-focused tests, not implementation tests.
+- Prefer `vi.mock` for external dependencies and avoid mocking internals.
+- Cover edge cases and error paths, not just the happy path.

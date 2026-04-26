@@ -17,7 +17,7 @@
   "scripts": {
     "build": "tsc",
     "build-watch": "tsc --watch",
-    "start": "node --env-file-if-exists dist/index.js",
+    "start": "node --env-file-if-exists='.env' dist/index.js",
     "start:dev": "tsx --env-file-if-exists=.env --watch src/index.ts",
     "test": "vitest run",
     "test:watch": "vitest watch",
