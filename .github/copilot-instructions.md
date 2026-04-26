@@ -117,3 +117,38 @@ async function fetchUser(userId: string): Promise<User> {
 - Write behavior-focused tests, not implementation tests.
 - Prefer `vi.mock` for external dependencies and avoid mocking internals.
 - Cover edge cases and error paths, not just the happy path.
+
+## Backend
+
+- Prefer TypeScript on Node.js for backend services.
+- Use Fastify as the default HTTP framework.
+- Keep architecture simple and modular; avoid heavy abstractions unless clearly required.
+- Prefer schema-based request and response validation.
+- Write small, focused route handlers and move business logic into separate services.
+- Do not introduce NestJS, Express, or other frameworks unless explicitly requested or already in
+  use.
+- Favor clear types, explicit interfaces, and predictable module boundaries.
+- Optimize for maintainability, testability, and low operational complexity.
+
+## Frontend & Web UI
+
+- For web UI work, prefer Web Components using TypeScript, semantic HTML, and Tailwind CSS.
+- Build reusable UI elements as custom elements extending `HTMLElement`.
+- The UI components should use DOM-safe text handling instead of a custom escaper.
+- Use Shadow DOM only when style or DOM encapsulation is actually needed (for example, in widgets,
+  dialogs, or form controls).
+- Favor browser-native features such as `<template>`, `<slot>`, and declarative markup instead of
+  heavy frontend frameworks.
+- Do not introduce React, Vue, Angular, Svelte, or framework-specific tooling unless explicitly
+  requested in the task.
+- Keep components small, focused, and framework-independent; avoid recreating complex routing or
+  global state systems.
+- Prefer vanilla browser APIs and light utility helpers over large third-party UI libraries.
+- Use Tailwind CSS utility classes for all styling; avoid writing custom CSS unless Tailwind cannot
+  express the style.
+- Design responsive layouts using Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, etc.); every
+  UI must work on mobile, tablet, and desktop.
+- Aim for a modern look: use consistent spacing, clear visual hierarchy, and subtle transitions
+  where they aid usability.
+- Follow accessible HTML patterns and include meaningful labels and ARIA attributes where
+  appropriate.
