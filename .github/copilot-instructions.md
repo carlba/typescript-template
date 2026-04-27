@@ -132,23 +132,22 @@ async function fetchUser(userId: string): Promise<User> {
 
 ## Frontend & Web UI
 
-- For web UI work, prefer Web Components using TypeScript, semantic HTML, and Tailwind CSS.
-- Build reusable UI elements as custom elements extending `HTMLElement`.
-- The UI components should use DOM-safe text handling instead of a custom escaper.
-- Use Shadow DOM only when style or DOM encapsulation is actually needed (for example, in widgets,
-  dialogs, or form controls).
-- Favor browser-native features such as `<template>`, `<slot>`, and declarative markup instead of
-  heavy frontend frameworks.
-- Do not introduce React, Vue, Angular, Svelte, or framework-specific tooling unless explicitly
-  requested in the task.
-- Keep components small, focused, and framework-independent; avoid recreating complex routing or
-  global state systems.
-- Prefer vanilla browser APIs and light utility helpers over large third-party UI libraries.
-- Use Tailwind CSS utility classes for all styling; avoid writing custom CSS unless Tailwind cannot
+- Use React with TypeScript as the standard for all web UI work.
+- Use [shadcn/ui](https://ui.shadcn.com) as the primary component library; add components via
+  `npx shadcn@latest add <component>` and own the generated source in `src/components/ui/`.
+- Use Tailwind CSS utility classes for all styling; avoid plain CSS files unless Tailwind cannot
   express the style.
+- Use shadcn/ui's built-in CSS variables and `tailwind.config` theme extension to define colors,
+  typography, and spacing consistently across the app; do not hardcode color values.
 - Design responsive layouts using Tailwind's responsive prefixes (`sm:`, `md:`, `lg:`, etc.); every
   UI must work on mobile, tablet, and desktop.
-- Aim for a modern look: use consistent spacing, clear visual hierarchy, and subtle transitions
-  where they aid usability.
-- Follow accessible HTML patterns and include meaningful labels and ARIA attributes where
-  appropriate.
+- Do not introduce MUI, Chakra UI, Ant Design, or other component libraries unless explicitly
+  requested.
+- Keep components small and focused on a single responsibility; move business logic into custom
+  hooks or service modules.
+- Use React Router for client-side routing when navigation is required.
+- Prefer functional components and React hooks; do not use class components.
+- Lift state only as far as needed; prefer local component state or context over global state
+  libraries unless the app clearly requires it.
+- Follow accessible HTML patterns; shadcn/ui is built on Radix UI primitives which provide ARIA
+  support — supplement with explicit labels where needed.
