@@ -152,8 +152,16 @@ async function fetchUser(userId: string): Promise<User> {
   });
   ```
 
-- Create an use HttpError() that are an extension of Error with statusCode for exceptionhandling,
-  ensure that these still capture the stacktrace.
+- Use the repo logger with Fastify
+
+  https://fastify.dev/docs/latest/Reference/Logging/#using-custom-loggers
+
+  ```typescript
+  import { config, LOGGER } from './registry.js';
+  const server = Fastify({ loggerInstance: LOGGER }).withTypeProvider<ZodTypeProvider>();
+  request.log.error({ message: error.message, stack: error.stack }, 'Unhandled server error');
+  ```
+
 - Keep architecture simple and modular; avoid heavy abstractions unless clearly required.
 - Write small, focused route handlers and move business logic into separate services.
 - Do not introduce NestJS, Express, or other frameworks unless explicitly requested or already in
