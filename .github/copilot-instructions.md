@@ -190,7 +190,3 @@ async function fetchUser(userId: string): Promise<User> {
   libraries unless the app clearly requires it.
 - Follow accessible HTML patterns; shadcn/ui is built on Radix UI primitives which provide ARIA
   support — supplement with explicit labels where needed.
-
-```
-
-```
