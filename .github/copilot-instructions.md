@@ -62,6 +62,8 @@ Fix any failures and rerun both commands before completing the task.
 
 - Keep all source code in `src/`.
 - Prefer early returns to reduce nesting.
+- When adding a package, choose the latest compatible major, unless there is a specific
+  compatibility reason not to.
 
 ## HTTP requests
 
