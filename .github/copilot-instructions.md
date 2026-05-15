@@ -119,6 +119,8 @@ async function fetchUser(userId: string): Promise<User> {
 - Write behavior-focused tests, not implementation tests.
 - Prefer `vi.mock` for external dependencies and avoid mocking internals.
 - Cover edge cases and error paths, not just the happy path.
+- If got requests needs to be tested prefer using [nock](https://github.com/nock/nock) to mock
+  actual http requests then mocking got.
 
 ## Backend
 
