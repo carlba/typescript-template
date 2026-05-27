@@ -189,6 +189,7 @@ async function fetchUser(userId: string): Promise<User> {
 - Keep components small and focused on a single responsibility; move business logic into custom
   hooks or service modules.
 - Use React Router for client-side routing when navigation is required.
+- Use [React Hook Form](https://react-hook-form.com/) for all form needs in an idiomatic way.
 - Prefer functional components and React hooks; do not use class components.
 - Lift state only as far as needed; prefer local component state or context over global state
   libraries unless the app clearly requires it.
