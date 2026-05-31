@@ -5,6 +5,12 @@
 This is a TypeScript project using ESM modules, Vitest for testing, ESLint + Prettier for code
 quality, and nodemon/tsx for development.
 
+## Shell environment
+
+> Note: Always run `cat` using a fixed local path such as `/usr/bin/cat` in the shell used by
+> tooling or Copilot. This avoids shell aliases like `cat` → `gcat` and keeps tool output plain text
+> without ANSI color escapes.
+
 ## Commands
 
 - `npm run build` — compile TypeScript
