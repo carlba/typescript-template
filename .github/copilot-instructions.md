@@ -5,12 +5,6 @@
 This is a TypeScript project using ESM modules, Vitest for testing, ESLint + Prettier for code
 quality, and nodemon/tsx for development.
 
-## Shell environment
-
-> Note: Always run `cat` using a fixed local path such as `/usr/bin/cat` in the shell used by
-> tooling or Copilot. This avoids shell aliases like `cat` → `gcat` and keeps tool output plain text
-> without ANSI color escapes.
-
 ## Commands
 
 - `npm run build` — compile TypeScript
@@ -38,8 +32,6 @@ quality, and nodemon/tsx for development.
 After any change, run these commands in order before considering the task done:
 
 1. Review `README.md` and update it if the change affects documentation or usage.
-2. `npm run lint`
-3. `npm run build`
 
 Fix any failures and rerun both commands before completing the task.
 
@@ -68,8 +60,6 @@ Fix any failures and rerun both commands before completing the task.
 
 - Keep all source code in `src/`.
 - Prefer early returns to reduce nesting.
-- When adding a package, choose the latest compatible major, unless there is a specific
-  compatibility reason not to.
 
 ## HTTP requests
 
@@ -125,8 +115,6 @@ async function fetchUser(userId: string): Promise<User> {
 - Write behavior-focused tests, not implementation tests.
 - Prefer `vi.mock` for external dependencies and avoid mocking internals.
 - Cover edge cases and error paths, not just the happy path.
-- If got requests needs to be tested prefer using [nock](https://github.com/nock/nock) to mock
-  actual http requests then mocking got.
 
 ## Backend
 
@@ -162,18 +150,14 @@ async function fetchUser(userId: string): Promise<User> {
   });
   ```
 
-- Use the repo logger with Fastify
-
-  https://fastify.dev/docs/latest/Reference/Logging/#using-custom-loggers
-
-  ```typescript
-  import { config, LOGGER } from './registry.js';
-  const server = Fastify({ loggerInstance: LOGGER }).withTypeProvider<ZodTypeProvider>();
-  request.log.error({ message: error.message, stack: error.stack }, 'Unhandled server error');
-  ```
-
+- Create an use HttpError() that are an extension of Error with statusCode for exceptionhandling,
+  ensure that these still capture the stacktrace.
 - Keep architecture simple and modular; avoid heavy abstractions unless clearly required.
 - Write small, focused route handlers and move business logic into separate services.
+- The services should handle errors and convert them into resonable HttpErrors that will in turn be
+  handled by global error handling.
+- If a service is not related to request processing at all then custom service specific errors
+  should be used.
 - Do not introduce NestJS, Express, or other frameworks unless explicitly requested or already in
   use.
 - Favor clear types, explicit interfaces, and predictable module boundaries.
@@ -182,6 +166,7 @@ async function fetchUser(userId: string): Promise<User> {
 ## Frontend & Web UI
 
 - Use React with TypeScript as the standard for all web UI work.
+
 - Use [shadcn/ui](https://ui.shadcn.com) as the primary component library; add components via
   `npx shadcn@latest add <component>` and own the generated source in `src/components/ui/`.
 - Use Tailwind CSS utility classes for all styling; avoid plain CSS files unless Tailwind cannot
@@ -195,7 +180,7 @@ async function fetchUser(userId: string): Promise<User> {
 - Keep components small and focused on a single responsibility; move business logic into custom
   hooks or service modules.
 - Use React Router for client-side routing when navigation is required.
-- Use [React Hook Form](https://react-hook-form.com/) for all form needs in an idiomatic way.
+  - If query params are utilized use the hook https://reactrouter.com/api/hooks/useSearchParams
 - Prefer functional components and React hooks; do not use class components.
 - Lift state only as far as needed; prefer local component state or context over global state
   libraries unless the app clearly requires it.
