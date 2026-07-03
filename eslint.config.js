@@ -17,8 +17,20 @@ export default defineConfig(
         'error',
         {
           min: 2,
-          exceptions: ['i', 'j', 'k'],
+          exceptions: ['i', 'j', 'k', '_'],
           properties: 'never',
+        },
+      ],
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
         },
       ],
       'no-restricted-syntax': [
