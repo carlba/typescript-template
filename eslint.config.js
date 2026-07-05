@@ -52,6 +52,7 @@ export default defineConfig(
     rules: {
       'no-restricted-syntax': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',
+      '@typescript-eslint/no-unsafe-return': 'off',
     },
   }
 );
