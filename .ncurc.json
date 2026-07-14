@@ -1,0 +1,4 @@
+{
+  "reject": ["@types/node", "typescript"],
+  "target": "latest"
+}
