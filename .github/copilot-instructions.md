@@ -126,6 +126,8 @@ async function fetchUser(userId: string): Promise<User> {
 
 - Prefer TypeScript on Node.js for backend services.
 - Use Fastify as the default HTTP framework.
+- Use InferDI for dependency injection and prefer class-based services and controllers over
+  factory-function services.
 - Validate routes using zod, like so
 
   ```typescript
@@ -159,7 +161,9 @@ async function fetchUser(userId: string): Promise<User> {
 - Create an use HttpError() that are an extension of Error with statusCode for exceptionhandling,
   ensure that these still capture the stacktrace.
 - Keep architecture simple and modular; avoid heavy abstractions unless clearly required.
-- Write small, focused route handlers and move business logic into separate services.
+- Write small, focused route handlers and move business logic into class-based services.
+- Resolve services from the InferDI container and inject dependencies through constructor injection
+  rather than instantiating them manually.
 - The services should handle errors and convert them into resonable HttpErrors that will in turn be
   handled by global error handling.
 - If a service is not related to request processing at all then custom service specific errors
