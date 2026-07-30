@@ -1,22 +1,21 @@
 # Use the latest Node.js runtime as a parent image
 FROM node:24-alpine
 
+# Enable Corepack so the pinned pnpm version from package.json is used
+RUN corepack enable
+
 # Set the working directory
 WORKDIR /usr/src/app
 
-# Copy package.json and package-lock.json
-COPY package*.json .
-
-# Install dependencies
-RUN npm install
-
-# Copy the rest of the application code
+# Copy the full workspace (apps/cli's `prepare` script builds @carlba/core's
+# dependencies during install, so source must be present before `pnpm install`)
 COPY . .
 
-# Compile TypeScript to JavaScript
-RUN npm run build
+# Install dependencies and compile TypeScript across the workspace
+RUN pnpm install --frozen-lockfile
+RUN pnpm run build
 
 VOLUME /mnt /config
 
-# Run the script
-CMD ["node", "dist/index.js"]
+# Run the CLI; args passed to `docker run` (e.g. `greet --name Carl`) are appended
+ENTRYPOINT ["node", "apps/cli/dist/cli.js"]

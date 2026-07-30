@@ -1,5 +1,4 @@
 import { z } from 'zod';
-export type { Config } from '../schema.js';
 
 export interface ConfigLogger {
   info(message: unknown, ...args: unknown[]): void;

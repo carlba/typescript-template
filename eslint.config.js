@@ -6,7 +6,7 @@ import tseslint from 'typescript-eslint';
 
 export default defineConfig(
   {
-    ignores: ['dist/', 'node_modules/', 'eslint.config.js', 'vitest.config.ts'], // acts as global ignores, due to the absence of other properties
+    ignores: ['**/dist/', '**/node_modules/', 'eslint.config.js', '**/vitest.config.ts'], // acts as global ignores, due to the absence of other properties
   },
   js.configs.recommended,
   {
@@ -48,7 +48,7 @@ export default defineConfig(
     },
   },
   {
-    files: ['src/lib/config.ts', 'src/**/*.spec.ts'],
+    files: ['packages/config/src/config.ts', '**/*.spec.ts'],
     rules: {
       'no-restricted-syntax': 'off',
       '@typescript-eslint/no-unsafe-assignment': 'off',

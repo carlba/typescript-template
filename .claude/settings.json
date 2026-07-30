@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -e ' *)",
+      "Bash(pnpm --filter @carlba/core build)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(pnpm --filter @carlba/core test)",
+      "Bash(pnpm --filter @carlba/cli test)",
+      "Bash(pnpm --filter @carlba/cli build)",
+      "Bash(node apps/cli/dist/cli.js greet --name Carl)",
+      "Bash(node apps/cli/dist/cli.js greet)",
+      "Bash(pnpm --filter @carlba/core lint)",
+      "Bash(echo \"EXIT:$?\")"
+    ]
+  }
+}

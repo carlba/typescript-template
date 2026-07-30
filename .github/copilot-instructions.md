@@ -2,18 +2,23 @@
 
 ## Overview
 
-This is a TypeScript project using ESM modules, Vitest for testing, ESLint + Prettier for code
-quality, and nodemon/tsx for development.
+This is a pnpm workspace monorepo using ESM modules, Vitest for testing, ESLint + Prettier for code
+quality, and tsx for development. Apps live under `apps/*` and shared libraries under `packages/*`,
+each with its own `package.json`, `tsconfig.json`, and `src/`.
 
 ## Commands
 
-- `npm run build` — compile TypeScript
-- `npm run start:dev` — start with hot reload
-- `npm test` — run tests once
-- `npm run test:watch` — watch tests
-- `npm run test:coverage` — test with coverage
-- `npm run lint` — lint the codebase
-- `npm run format` — format code with Prettier
+Run from the repo root; they fan out across all workspace packages via pnpm:
+
+- `pnpm run build` — compile TypeScript in every package
+- `pnpm run start:dev` — start the CLI with hot reload
+- `pnpm test` — run tests once across every package
+- `pnpm run test:coverage` — test with coverage
+- `pnpm run lint` — lint the codebase
+- `pnpm run format` — format code with Prettier
+
+Use `pnpm --filter <package-name> <script>` to target a single workspace package (e.g.
+`pnpm --filter @carlba/cli build`).
 
 ## Code Style
 
@@ -58,7 +63,8 @@ Fix any failures and rerun both commands before completing the task.
 
 ## Project conventions
 
-- Keep all source code in `src/`.
+- Keep each package's/app's source code in its own `src/` (e.g. `apps/cli/src`,
+  `packages/core/src`).
 - Prefer early returns to reduce nesting.
 
 ## HTTP requests

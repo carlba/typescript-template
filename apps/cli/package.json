@@ -1,0 +1,26 @@
+{
+  "name": "@carlba/cli",
+  "version": "0.0.1",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "bin": {
+    "cli": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "build-watch": "tsc --watch",
+    "start:dev": "tsx src/cli.ts",
+    "prepare": "pnpm --filter @carlba/core... run build",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "lint": "eslint ."
+  },
+  "dependencies": {
+    "@carlba/config": "workspace:*",
+    "@carlba/core": "workspace:*",
+    "@carlba/logger": "workspace:*",
+    "commander": "^14.0.0",
+    "zod": "^4.4.3"
+  }
+}
