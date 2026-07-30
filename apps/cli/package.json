@@ -10,6 +10,7 @@
   "scripts": {
     "build": "tsc",
     "build-watch": "tsc --watch",
+    "start": "tsx dist/cli.js",
     "start:dev": "tsx src/cli.ts",
     "prepare": "pnpm --filter @carlba/core... run build",
     "test": "vitest run",
@@ -20,7 +21,7 @@
     "@carlba/config": "workspace:*",
     "@carlba/core": "workspace:*",
     "@carlba/logger": "workspace:*",
-    "commander": "^14.0.0",
+    "commander": "^15.0.0",
     "zod": "^4.4.3"
   }
 }

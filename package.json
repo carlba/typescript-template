@@ -19,25 +19,25 @@
     "build": "pnpm -r run build",
     "test": "pnpm -r run test",
     "test:coverage": "pnpm -r run --if-present test:coverage",
+    "start": "pnpm --filter @carlba/cli start",
     "start:dev": "pnpm --filter @carlba/cli start:dev",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
+    "dependency:update": "pnpm up -r --latest \"!typescript\" \"!vitest\" \"!@types/node\"",
     "linux:install": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install\"",
-    "linux:ci": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install --frozen-lockfile && pnpm run lint && pnpm run test && pnpm run build\"",
-    "cli:build": "pnpm --filter @carlba/cli build",
-    "cli:dev": "pnpm --filter @carlba/cli start:dev"
+    "linux:ci": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install --frozen-lockfile && pnpm run lint && pnpm run test && pnpm run build\""
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@tsconfig/node24": "^24.0.4",
-    "@types/node": "^25.6.0",
+    "@types/node": "^24.13.3",
     "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.7.0",
-    "prettier": "^3.9.5",
+    "eslint": "^10.8.0",
+    "prettier": "^3.9.6",
     "tsx": "^4.23.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.64.0",
+    "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"
   },
   "allowScripts": {
