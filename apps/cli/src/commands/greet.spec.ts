@@ -5,8 +5,18 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 import { registerGreetCommand } from './greet.js';
 import type { Config } from '../schema.js';
 
-const prodConfig: Config = { NODE_ENV: 'production', isDevelopment: false, logLevel: 'info' };
-const devConfig: Config = { NODE_ENV: 'development', isDevelopment: true, logLevel: 'debug' };
+const prodConfig: Config = {
+  NODE_ENV: 'production',
+  isDevelopment: false,
+  logLevel: 'info',
+  name: undefined,
+};
+const devConfig: Config = {
+  NODE_ENV: 'development',
+  isDevelopment: true,
+  logLevel: 'debug',
+  name: undefined,
+};
 const logger = createLogger(undefined, 'test');
 
 describe('registerGreetCommand', () => {

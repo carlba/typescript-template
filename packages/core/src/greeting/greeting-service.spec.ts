@@ -1,7 +1,7 @@
 import type { Logger } from '@carlba/logger';
 import { describe, expect, it, vi } from 'vitest';
 
-import { GreetingService } from './greeting-service.js';
+import { GreetingService } from '../greeting/greeting-service.js';
 
 function createMockLogger(): Logger {
   return {

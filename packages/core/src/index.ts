@@ -1,1 +1,1 @@
-export { GreetingService } from './services/greeting-service.js';
+export { GreetingService } from './greeting/greeting-service.js';

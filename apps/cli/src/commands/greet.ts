@@ -11,7 +11,8 @@ export function registerGreetCommand(program: Command, config: Config, logger: L
     .option('-n, --name <name>', 'name to greet')
     .action((options: { name?: string }) => {
       const greetingService = new GreetingService({ logger });
-      const greeting = greetingService.create(options.name);
+      const name = config.name ?? options.name;
+      const greeting = greetingService.create(name);
 
       logger.debug({ name: options.name }, 'greet command executed');
 

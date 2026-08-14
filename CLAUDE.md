@@ -1,5 +1,16 @@
 # Project Guidelines
 
+> **Forking this template?** Do this once, then delete this callout:
+>
+> 1. Rewrite Overview below — drop the "template repository" framing, describe this project
+>    directly.
+>
+> 2. Delete "Structure & dependency graph" (Part A) and replace it with this repo's actual packages.
+>
+> 3. Rename all references to `typescript-template` to the project name.
+>
+> 4. Update start script so they point to the new entrypoint of the project.
+
 ## Overview
 
 This is a **template repository**: it gets forked/copied and specialized into different kinds of
@@ -174,6 +185,16 @@ situational context that survives, so it must carry the specifics:
 - Never put user-facing formatting in the message (no trailing punctuation styling, no HTML) — the
   consumer decides how to present it; the message is for logs and developers.
 
+## Loading `.env` files
+
+Use Node's native `--env-file-if-exists` flag (Node 20.6+; `tsx` passes it straight through to Node,
+since it's a runtime flag, not a `tsx`-specific one) on every script that runs the app's entry file:
+
+```json
+"start": "tsx --env-file-if-exists=../../.env dist/cli.js",
+"start:dev": "tsx --env-file-if-exists=../../.env src/cli.ts"
+```
+
 ## TypeScript & code style
 
 ### Clean code principles
@@ -258,8 +279,8 @@ their absence today isn't a signal to avoid them.
 
 ## CLI apps
 
-_Applies to any `apps/*` package that is a command-line tool — already true for `apps/cli`, and the
-template for future CLI apps._
+Applies to any `apps/*` package that is a command-line tool — already true for `apps/cli`, and the
+template for future CLI apps.
 
 - Use [Commander](https://www.npmjs.com/package/commander).
 
@@ -272,6 +293,14 @@ template for future CLI apps._
 - Include a `prepare` script that runs the package's build so `npm link`/`pnpm link` works locally.
 
 - Bootstrap config/logging via `@carlba/config` + `@carlba/logger`, as shown above.
+
+- Keep business logic out of command files (`src/commands/*.ts`) and in plain classes/functions
+  (e.g. `packages/core`'s `GreetingService`) that take their dependencies as constructor/function
+  params — commands stay thin, parsing args and formatting output. Wire dependencies by hand in
+  `cli.ts` and pass them down explicitly; do not introduce InferDI or any DI container here. A CLI
+  invocation is a single-shot process with no per-request scope to manage, so a container adds
+  indirection without solving a problem — InferDI is a Part B backend/API convention for managing
+  per-request scope in a long-running server, which doesn't apply here.
 
 ## HTTP client usage
 

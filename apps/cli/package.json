@@ -11,7 +11,7 @@
     "build": "tsc",
     "build-watch": "tsc --watch",
     "start": "tsx dist/cli.js",
-    "start:dev": "tsx src/cli.ts",
+    "start:dev": "tsx --env-file-if-exists=../../.env src/cli.ts",
     "prepare": "pnpm --filter @carlba/core... run build",
     "test": "vitest run",
     "test:watch": "vitest watch",
