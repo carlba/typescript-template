@@ -25,8 +25,8 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dependency:update": "pnpm up -r --latest \"!typescript\" \"!vitest\" \"!@types/node\"",
-    "linux:install": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install\"",
-    "linux:ci": "docker run --rm --platform linux/amd64 -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install --frozen-lockfile && pnpm run lint && pnpm run test && pnpm run build\""
+    "linux:install": "docker run --rm --platform linux/amd64 -e CI=\"true\" -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install\"",
+    "linux:ci": "docker run --rm --platform linux/amd64 -e CI=\"true\" -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install --frozen-lockfile && pnpm run lint && pnpm run test && pnpm run build\""
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
