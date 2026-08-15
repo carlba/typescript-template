@@ -534,7 +534,7 @@ _Applies when this template is specialized into a project with an HTTP backend â
 ## Frontend / Web UI apps
 
 _Applies when this template is specialized into a fullstack project with a web UI â€” e.g. a future
-`apps/web` package._
+`apps/frontend` package._
 
 - Use React with TypeScript as the standard for all web UI work.
 
