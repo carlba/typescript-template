@@ -1,12 +1,12 @@
 ---
 name: Story
 about: Use this template for feature requests and user stories
-title: "[Story] "
+title: '[Story] '
 labels: enhancement
 assignees: []
 ---
 
-# Story: 
+# Story:
 
 As a subscribed user,  
 I want to receive an email when my payment fails,  

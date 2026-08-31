@@ -206,8 +206,9 @@ async function fetchUser(userId: string): Promise<User> {
 
 - Write small, focused route handlers and move business logic into class-based services.
 
-- Wire InferDI into Fastify with the official [`@inferdi/fastify`](https://inferdi.com/adapters/fastify)
-  adapter rather than hand-rolled container decoration — it manages per-request scopes automatically:
+- Wire InferDI into Fastify with the official
+  [`@inferdi/fastify`](https://inferdi.com/adapters/fastify) adapter rather than hand-rolled
+  container decoration — it manages per-request scopes automatically:
 
   ```bash
   pnpm add @inferdi/inferdi @inferdi/fastify
