@@ -16,3 +16,5 @@ const logger = createLogger(undefined, config.NODE_ENV, { level: config.logLevel
 program.name('cli').description('Utility CLI').version('0.0.1');
 
 registerGreetCommand(program, config, logger);
+
+await program.parseAsync();
