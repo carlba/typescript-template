@@ -2,7 +2,7 @@ import { createLogger } from '@carlba/logger';
 import { Command } from 'commander';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { registerGreetCommand } from './greet.js';
+import { registerGreetCommand } from './greet-command.js';
 import type { Config } from '../schema.js';
 
 const prodConfig: Config = {

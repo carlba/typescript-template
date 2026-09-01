@@ -2,7 +2,7 @@
 import { getConfig } from '@carlba/config';
 import { Command } from 'commander';
 
-import { registerGreetCommand } from './commands/greet.js';
+import { registerGreetCommand } from './greeting/greet-command.js';
 import { envSchema } from './schema.js';
 import { createLogger } from '@carlba/logger';
 

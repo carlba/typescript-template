@@ -1,4 +1,4 @@
-import { GreetingService } from '@carlba/core';
+import { GreetingService } from './greeting-service.js';
 import type { Logger } from '@carlba/logger';
 import { Command } from 'commander';
 

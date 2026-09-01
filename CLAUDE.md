@@ -287,15 +287,15 @@ template for future CLI apps.
 - The package's `bin` entry should match the project name and point to `dist/cli.js`.
 
 - The entry file (`cli.ts`) should construct and run the `Command` program; put each subcommand in
-  its own file under `src/commands/` (see `apps/cli/src/commands/greet.ts` as the template) and
+  a domain appropriate folder (see `apps/cli/src/greet/greet-command.ts` as the template) and
   register it from the entry file.
 
 - Include a `prepare` script that runs the package's build so `npm link`/`pnpm link` works locally.
 
 - Bootstrap config/logging via `@carlba/config` + `@carlba/logger`, as shown above.
 
-- Keep business logic out of command files (`src/commands/*.ts`) and in plain classes/functions
-  (e.g. `packages/core`'s `GreetingService`) that take their dependencies as constructor/function
+- Keep business logic out of command files (`src/<domain>/*-command.ts`) and in plain classes/functions
+  (e.g. `src/greeting`'s `GreetingService`) that take their dependencies as constructor/function
   params — commands stay thin, parsing args and formatting output. Wire dependencies by hand in
   `cli.ts` and pass them down explicitly; do not introduce InferDI or any DI container here. A CLI
   invocation is a single-shot process with no per-request scope to manage, so a container adds
