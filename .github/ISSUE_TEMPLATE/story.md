@@ -1,32 +1,23 @@
 ---
 name: Story
-about: Use this template for feature requests and user stories
+about: Template for a user story
 title: '[Story] '
-labels: enhancement
+labels: story
 assignees: []
 ---
 
-# Story:
+## User story
 
-As a subscribed user,  
-I want to receive an email when my payment fails,  
-so that I can fix my billing details and avoid losing access.
-
-## Description
-
-- Triggered when a recurring payment attempt fails.
-- Uses our standard email template engine.
-- Must be idempotent per invoice and 24-hour window.
+As a **[type of user]**,  
+I want to **[do something]**,  
+so that **[benefit/value]**.
 
 ## Acceptance criteria
 
-- [ ] When a recurring payment fails, an email is sent to the user’s primary email address.
-- [ ] Email contains: product name, last 4 digits of the card, and a link to update billing.
-- [ ] For repeated failures on the same invoice, at most one email is sent per 24 hours.
-- [ ] If email sending fails, the failure is logged and retried according to our retry policy.
+- [ ] Given **[context]**, when **[action]**, then **[expected result]**.
+- [ ] ...
+- [ ] ...
 
-## Technical notes (optional)
+## Notes
 
-- Subscribe to `payment.failed` events from the billing provider.
-- Enqueue email jobs on the notifications queue.
-- Implement idempotency using `<invoice_id, user_id, date>` key.
+[Any additional context, technical considerations, links, designs, or edge cases.]
