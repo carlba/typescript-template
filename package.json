@@ -21,7 +21,7 @@
     "test:coverage": "pnpm -r run --if-present test:coverage",
     "start": "node --env-file-if-exists=.env apps/cli/dist/cli.js",
     "start:dev": "tsx --env-file-if-exists=.env apps/cli/src/cli.ts",
-    "lint": "eslint .",
+    "lint": "oxlint --type-aware",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "dependency:update": "pnpm up -r --latest \"!typescript\" \"!vitest\" \"!@types/node\"",
@@ -29,15 +29,14 @@
     "linux:ci": "docker run --rm --platform linux/amd64 -e CI=\"true\" -v \"$PWD\":/app -w /app node:24-bullseye bash -lc \"corepack enable && corepack prepare pnpm@11.5.1 --activate && pnpm install --frozen-lockfile && pnpm run lint && pnpm run test && pnpm run build\""
   },
   "devDependencies": {
-    "@eslint/js": "^10.0.1",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.13.3",
     "@vitest/coverage-v8": "^4.1.10",
-    "eslint": "^10.8.0",
+    "oxlint": "^1.94.0",
+    "oxlint-tsgolint": "^7.0.2007",
     "prettier": "^3.9.6",
     "tsx": "^4.23.1",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.65.0",
     "vitest": "^4.1.10"
   },
   "allowScripts": {

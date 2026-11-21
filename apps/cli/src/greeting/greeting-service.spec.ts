@@ -4,6 +4,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { GreetingService } from './greeting-service.js';
 
 function createMockLogger(): Logger {
+  // oxlint-disable-next-line typescript/no-unsafe-type-assertion
   return {
     info: vi.fn(),
     error: vi.fn(),

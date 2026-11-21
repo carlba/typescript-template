@@ -15,7 +15,7 @@
     "prepare": "pnpm --filter @carlba/core... run build",
     "test": "vitest run",
     "test:watch": "vitest watch",
-    "lint": "eslint ."
+    "lint": "oxlint --type-aware"
   },
   "dependencies": {
     "@carlba/config": "workspace:*",

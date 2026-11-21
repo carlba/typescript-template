@@ -1,0 +1,41 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "node"],
+  "categories": { "correctness": "error", "suspicious": "warn" },
+  "ignorePatterns": ["**/dist/", "**/node_modules/", "**/vitest.config.ts"],
+  "rules": {
+    "id-length": [
+      "error",
+      {
+        "min": 2,
+        "exceptions": ["i", "j", "k", "_"],
+        "exceptionPatterns": ["^[A-Z]$"],
+        "properties": "never"
+      }
+    ],
+    "no-unused-vars": [
+      "error",
+      {
+        "args": "all",
+        "argsIgnorePattern": "^_",
+        "caughtErrors": "all",
+        "caughtErrorsIgnorePattern": "^_",
+        "destructuredArrayIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "ignoreRestSiblings": true
+      }
+    ],
+    "node/no-process-env": "error",
+    "typescript/consistent-type-definitions": "off"
+  },
+  "overrides": [
+    {
+      "files": ["packages/config/src/config.ts", "**/*.spec.ts"],
+      "rules": {
+        "node/no-process-env": "off",
+        "typescript/no-unsafe-assignment": "off",
+        "typescript/no-unsafe-return": "off"
+      }
+    }
+  ]
+}

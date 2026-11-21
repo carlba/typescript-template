@@ -15,7 +15,7 @@
 
 This is a **template repository**: it gets forked/copied and specialized into different kinds of
 projects — CLI-only, backend-only, or fullstack (backend + frontend). It's a pnpm workspace monorepo
-using ESM modules, Vitest for testing, ESLint + Prettier for code quality, and tsx for development.
+using ESM modules, Vitest for testing, oxlint + Prettier for code quality, and tsx for development.
 `apps/*` holds executables/services and `packages/*` holds shared libraries, each with its own
 `package.json`, `tsconfig.json`, and `src/`.
 
@@ -60,7 +60,7 @@ Run from the repo root; they fan out across all workspace packages via pnpm:
 
 - `pnpm run test:coverage` — test with coverage
 
-- `pnpm run lint` — lint the codebase (`eslint .`, repo-wide flat config)
+- `pnpm run lint` — lint the codebase (`oxlint --type-aware`, config in `.oxlintrc.json`)
 
 - `pnpm run format` / `pnpm run format:check` — format code with Prettier
 
