@@ -33,88 +33,102 @@ add its folder if it has another name._
 - Validate request input with `class-validator` DTOs through Nest's `ValidationPipe`, registered
   once through `APP_PIPE` in `AppModule`. Do not validate inline in controllers or services.
 
-## Setup walkthrough
+## Target state
 
-How the Nest app was added to this monorepo, step by step.
+What a correctly set up Nest backend looks like in this monorepo. The sections below describe the
+end state, not a procedure. To set up or repair an app, compare it with each section, change only
+what differs, and leave everything that already matches alone.
 
-### 1. Scaffold the app
+Rules for reaching the target state:
 
-Run from the repo root. `--skip-install` and `--skip-git` avoid a nested git repo and a per-app
-lockfile; the single `pnpm install` happens at the root afterwards. The CLI version is pinned so the
-generated files don't change underneath us when a new release lands.
+- **Look before you write.** Check what exists first (`git ls-files apps packages`,
+  `ls packages`). Never create a file or package that already exists. If `git status` shows a path
+  as _modified_ rather than _untracked_, you are overwriting committed work: stop and use the
+  existing file.
 
-```bash
-cd apps
-pnpm dlx @nestjs/cli@12.0.15 new backend --skip-git --skip-install
-cd backend
-pnpm dlx @nestjs/skills add --agent all
-cd ../..
-```
+- **Keep to the target.** Change only what a section below says differs. Format with
+  `pnpm --filter @carlba/backend run format`, not the root `pnpm run format`, which reformats
+  unrelated files.
 
-Run the skills command from inside `apps/backend`: run from `apps/` it installs `.claude/skills` and
-`.agents/skills` next to the app instead of inside it, and the app-level skills are then not
-registered when working under `apps/backend`.
+- **Verify at the end.** Run `pnpm install` at the root, then `pnpm run lint`, `pnpm run test`,
+  `pnpm run build` and `pnpm --filter @carlba/backend run test:e2e`. All of them pass.
 
-This generates an ESM project (`"type": "module"`, `module: nodenext`) tested with Vitest and linted
-with oxlint. The user is expected to choose to add all skills, choose a ESM project and not add NestJS
-observe.
+### 1. The app
 
-### 2. Make the package a workspace member
+- `apps/backend` is a Nest project created with the Nest CLI, as an ESM project (`"type": "module"`,
+  `module: nodenext`), tested with Vitest and linted with oxlint. It has no nested git repo and no
+  per-app lockfile; the one lockfile is at the repo root.
 
-In `apps/backend/package.json`, rename the package to `@carlba/backend` and set a description.
+- The Nest agent skills are installed inside the app, in `apps/backend/.claude/skills` and
+  `apps/backend/.agents/skills`, so they are registered when working under `apps/backend`.
 
-- The devDependencies are deliberately left as the Nest CLI generated them (`typescript`, `vitest`,
-  `oxlint`, `prettier`, ...), so the app stays on what Nest recommends. Review them against the root
-  versions if `pnpm install` reports duplicate or mismatched versions.
+- If the app does not exist yet, create it from the repo root with the pinned CLI version, so the
+  generated files don't change underneath us when a new release lands, and run the skills command
+  from inside the app (run from `apps/` it installs the skills next to the app instead of inside
+  it). Choose to add all skills, an ESM project, and not NestJS Observe:
 
-- `@carlba/core` (for `ApiError`) is a workspace dependency, added with the exception filter (see
-  step 6). `@carlba/config` and `@carlba/logger` are not used here (see steps 4 and 5).
+  ```bash
+  cd apps
+  pnpm dlx @nestjs/cli@12.0.15 new backend --skip-git --skip-install
+  cd backend
+  pnpm dlx @nestjs/skills add --agent all
+  cd ../..
+  ```
+
+### 2. Workspace member
+
+- `apps/backend/package.json` is named `@carlba/backend` and has a description.
+
+- The devDependencies are the ones the Nest CLI generated (`typescript`, `vitest`, `oxlint`,
+  `prettier`, ...), so the app stays on what Nest recommends. Review them against the root versions
+  if `pnpm install` reports duplicate or mismatched versions.
+
+- `@carlba/core` (for `ApiError`) and `@carlba/nest-modules` (see step 6) are `workspace:*`
+  dependencies. `@carlba/config` and `@carlba/logger` are not used (see steps 4 and 5).
 
 - The generated `format` script is kept.
 
-### 3. Align tooling with the repo
+### 3. Tooling matches the repo
 
-- **tsconfig:** `apps/backend/tsconfig.json` now extends `../../tsconfig.json` and keeps only the
+- **tsconfig:** `apps/backend/tsconfig.json` extends `../../tsconfig.json` and keeps only the
   options Nest needs: `experimentalDecorators`, `emitDecoratorMetadata`,
   `strictPropertyInitialization: false`, `declaration`, `removeComments`, `incremental`,
   `outDir`/`rootDir`, and `types: ["vitest/globals", "node"]`. `module`, `moduleResolution`,
-  `target`, `strict` and `esModuleInterop` now come from the root (`@tsconfig/node24`).
-  `tsconfig.build.json` is unchanged; `nest build` uses it.
+  `target`, `strict` and `esModuleInterop` come from the root (`@tsconfig/node24`).
+  `tsconfig.build.json` is the generated one; `nest build` uses it.
 
-- **`verbatimModuleSyntax`:** the root enables it, so types must be imported with `import type`.
-  The generated `test/app.e2e-spec.ts` imported `INestApplication` and `App` as values; they are now
-  `import type`. Classes used as DI tokens or in decorated constructor parameters stay regular
-  imports, since `emitDecoratorMetadata` needs the runtime value.
+- **`verbatimModuleSyntax`:** the root enables it, so types are imported with `import type`,
+  including `INestApplication`, `App` and `TestingModule` in the tests. Classes used as DI tokens or
+  in decorated constructor parameters (and DTO classes) are regular imports, since
+  `emitDecoratorMetadata` needs the runtime value.
 
-- **Prettier:** the generated `apps/backend/.prettierrc` was deleted so the root config applies
-  (`printWidth: 100`, `trailingComma: es5`). The generated sources were reformatted with
-  `prettier --write`.
+- **Prettier:** there is no `apps/backend/.prettierrc`, so the root config applies
+  (`printWidth: 100`, `trailingComma: es5`), and the sources are formatted with it.
 
-- **oxlint:** the generated `apps/backend/.oxlintrc.json` was replaced. Its one generally useful
-  rule, `typescript/no-floating-promises`, was added to the root `.oxlintrc.json`, so it applies to
-  the whole repo. Its `no-explicit-any: off` was dropped, since the repo avoids `any`.
+- **oxlint:** `typescript/no-floating-promises` is set in the root `.oxlintrc.json`, so it applies
+  to the whole repo. `no-explicit-any` is not turned off, since the repo avoids `any`.
 
   Nest-specific rules live in `apps/backend/.oxlintrc.json`, which `extends` the root config
   (`"extends": ["../../.oxlintrc.json"]`) — a nested oxlint config does not inherit from the root
-  unless it extends it. Currently it only sets
+  unless it extends it. It sets only
   `typescript/no-extraneous-class: ["warn", { "allowWithDecorator": true }]`, because Nest modules
   such as `AppModule` are empty classes that carry only the `@Module(...)` decorator and would
   otherwise warn. Put any further Nest-only lint rules there, not in the root config.
 
-- **Vitest:** `vitest.config.ts` gained the repo's v8 coverage block (`text`, `json`, `html`
-  reporters). It keeps `globals: true`, `include: **/*.spec.ts` and the separate
-  `vitest.config.e2e.ts`: Nest's e2e tests live in `test/`, outside `src/`, so the other packages'
-  `dir: 'src'` doesn't fit.
+- **Vitest:** `vitest.config.ts` has the repo's v8 coverage block (`text`, `json`, `html`
+  reporters), `globals: true` and `include: **/*.spec.ts`. The separate `vitest.config.e2e.ts` runs
+  the e2e tests: they live in `test/`, outside `src/`, so the other packages' `dir: 'src'` doesn't
+  fit.
 
-- **Known lint failure until config is wired in:** `src/main.ts` reads `process.env.PORT`, which the
-  root `node/no-process-env` rule rejects. It is fixed in step 4.
+- **No `process.env`:** the root `node/no-process-env` rule rejects it, so `src/main.ts` reads the
+  port from `ConfigService` (step 4).
 
 ### 4. Config with `@nestjs/config`
 
 The app uses Nest's own config module rather than `@carlba/config`, so `@carlba/config` and
 `@carlba/logger` are not dependencies of `apps/backend`.
 
-- **Dependencies:** `@nestjs/config` and `zod` are added to `apps/backend/package.json`.
+- **Dependencies:** `@nestjs/config` and `zod` are in `apps/backend/package.json`.
 
 - **Schema:** `src/config/env.schema.ts` exports a zod `envSchema` (`NODE_ENV`, `PORT`, `LOG_LEVEL`) and the
   inferred `Env` type. `PORT` uses `z.coerce.number()` because environment variables are strings.
@@ -128,13 +142,12 @@ The app uses Nest's own config module rather than `@carlba/config`, so `@carlba/
 
 - **Reading values:** `main.ts` gets `ConfigService<Env, true>` from the app and calls
   `get('PORT', { infer: true })`, which is typed as `number`. This replaces `process.env.PORT` and
-  clears the lint failure from step 3. Inject `ConfigService<Env, true>` the same way in providers.
+  satisfies the lint rule from step 3. Providers inject `ConfigService<Env, true>` the same way.
 
 - **Tests:** `src/config/env.schema.spec.ts` covers defaults, coercion and rejection of bad values.
 
-Then run `pnpm install` at the root, followed by `pnpm run lint`, `pnpm run test` and
-`pnpm run build`. To check `.env` loading, set `PORT=3456` in the root `.env` and run
-`pnpm --filter @carlba/backend start`; the app should listen on 3456.
+- **Check:** with `PORT=3456` in the root `.env`, `pnpm --filter @carlba/backend start` listens on
+  3456.
 
 ### 5. Logging with `nestjs-pino`
 
@@ -256,6 +269,11 @@ behind it changes.
 Services throw `ApiError` (`@carlba/core`); one filter turns every error into an HTTP response and
 logs it. Controllers and services do not catch and format errors themselves.
 
+The filter is part of the template, in the committed package `packages/nest-modules`. The app's side
+of the target state is only the dependencies and the import below. The package, filter and specs are
+not created or rewritten when setting up an app; change them only when asked to, by editing the
+existing files and extending their specs.
+
 - **Package:** the filter lives in `packages/nest-modules` (`@carlba/nest-modules`) as a Nest
   module, so other Nest apps can reuse it. `nest-modules` is the one package for all shared Nest
   modules (one folder per module under `src/`, re-exported from `src/index.ts`) rather than one
@@ -265,14 +283,13 @@ logs it. Controllers and services do not catch and format errors themselves.
   shape plus `experimentalDecorators` and `emitDecoratorMetadata` in its `tsconfig.json`, and
   `@nestjs/common` and `@nestjs/core` as peer dependencies so the app and the package share one copy.
 
-- **Dependencies:** add `@carlba/nest-modules` as `workspace:*` in
-  `apps/backend/package.json`; keep `@carlba/core` there too, since the app still needs it for
-  `ApiError`. Build both before the app (`pnpm run build` does, in dependency order); they resolve
-  to their `dist/`.
+- **Dependencies:** `apps/backend/package.json` lists `@carlba/nest-modules` and `@carlba/core` as
+  `workspace:*`; the app needs `@carlba/core` itself for `ApiError`. Both are built before the app
+  (`pnpm run build` does, in dependency order) and resolve to their `dist/`.
 
 - **Module:** `ExceptionFilterModule` declares `{ provide: APP_FILTER, useClass: AllExceptionsFilter }`.
-  A provider with `APP_FILTER` is global wherever its module is imported, so `AppModule` only adds
-  `ExceptionFilterModule` to `imports`. `AllExceptionsFilter` is exported too, for apps that want to
+  A provider with `APP_FILTER` is global wherever its module is imported, so `AppModule` only lists
+  `ExceptionFilterModule` in `imports`. `AllExceptionsFilter` is exported too, for apps that want to
   register it themselves.
 
 - **Filter:** `AllExceptionsFilter` is a `@Catch()` class. It uses `HttpAdapterHost` to reply, not
