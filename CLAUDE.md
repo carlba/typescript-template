@@ -363,8 +363,9 @@ The conventions below apply to both stacks.
 
 - Services and domain logic throw `ApiError` (`@carlba/core`, see Shared packages above)
 
-- Bootstrap config/logging via `@carlba/config` + `@carlba/logger`, as shown above, rather than ad
-  hoc `process.env`/`pino` usage.
+- Config and logging bootstrap is stack-specific: Fastify apps use `@carlba/config` +
+  `@carlba/logger` as shown above; NestJS apps use `@nestjs/config` and `nestjs-pino` (see the
+  stack's rule file). Either way, no ad hoc `process.env` usage or hand-built `pino` instances.
 
 - Always configure database access via a single full connection URI (e.g. `DATABASE_URL`,
   `postgresql://user:password@host:5432/dbname`) rather than separate `DB_HOST`/`DB_PORT`/`DB_USER`/
