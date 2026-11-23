@@ -33,6 +33,10 @@ add its folder if it has another name._
 - Validate request input with `class-validator` DTOs through Nest's `ValidationPipe`, registered
   once through `APP_PIPE` in `AppModule`. Do not validate inline in controllers or services.
 
+- Make outbound HTTP calls with `@nestjs/http-client`. Do not use `got`, `axios`,
+  `@nestjs/axios`, or `fetch` in a Nest app, despite the general rule in the root `CLAUDE.md`. See
+  "HTTP client" below.
+
 ## Target state
 
 What a correctly set up Nest backend looks like in this monorepo. The sections below describe the
@@ -379,3 +383,67 @@ exception filter and the validation pipe can be tried from the editor.
   with the demo routes. There are no secrets in the file yet; once an endpoint needs a token, read it
   with `{{$dotenv APP_TOKEN}}` as in the root `CLAUDE.md` rather than writing it into the file.
 
+
+### 9. HTTP client
+
+Outbound HTTP calls go through [`@nestjs/http-client`](https://docs.nestjs.com/application/http-client),
+Nest's first-party client built on Node's `fetch`. It replaces `got` (the rule for non-Nest packages
+in the root `CLAUDE.md`) and the axios-based `HttpModule` from `@nestjs/axios`; neither is used in a
+Nest app. The app has no outbound calls yet, so the package is added with the first one:
+`pnpm --filter @carlba/backend add @nestjs/http-client`.
+
+- **Registration:** one named client per upstream API, registered in the feature module that uses
+  it, with the base URL and timeout from config rather than hard-coded. Base URLs and API tokens
+  come from the zod `envSchema` (step 4), so use `registerAsync` with `ConfigService<Env, true>`:
+
+  ```ts
+  HttpClientModule.register({ name: 'github', baseUrl: 'https://api.github.com', timeout: '5s' });
+  ```
+
+  Set a `timeout`: the default is none. It applies per attempt. Use `forRoot({ ... })` once in
+  `AppModule` only for defaults shared by every client.
+
+- **Injection:** classes inject it through the constructor: `HttpClient` for the unnamed default
+  client, `@InjectHttpClient('github')` for a named one. Both come from `@nestjs/http-client`, and
+  the injected class is a regular (not `import type`) import, as for any other DI token.
+
+- **Calls:** `await this.github.get<Repo>('/repos/:owner/:repo', { params: { owner, repo } })`
+  returns `{ data, status, ... }`. Path values go in `params`, which are URI-encoded, and query
+  values in `query`. Do not build URLs by string concatenation. Send bodies with `json`.
+
+- **Types are not checked at runtime:** the generic only describes `data`. Validate responses from
+  external systems at the boundary, as the root `CLAUDE.md` requires for any external input.
+
+- **Retries:** on by default for idempotent methods (GET, HEAD, OPTIONS, PUT, DELETE: 3 attempts on
+  connection errors, timeouts and 408/429/5xx). POST and PATCH are not retried; only enable that
+  for calls that are safe to repeat.
+
+- **Errors:** failures throw subclasses of `HttpClientError` (`HttpResponseError`,
+  `HttpTimeoutError`, `HttpNetworkError`, `HttpParseError`). Services wrap them in `ApiError` with
+  the identifying data and the original error as `cause`, so the global exception filter (step 6)
+  stays the only place that builds responses:
+
+  ```ts
+  try {
+    return (await this.github.get<Repo>('/repos/:owner/:repo', { params: { owner, repo } })).data;
+  } catch (error) {
+    if (error instanceof HttpResponseError && error.status === 404) {
+      throw new ApiError(`Repository not found: owner=${owner} repo=${repo}`, {
+        statusCode: 404,
+        cause: error,
+      });
+    }
+    throw new ApiError(`Failed to load repository: owner=${owner} repo=${repo}`, {
+      statusCode: 502,
+      cause: error,
+    });
+  }
+  ```
+
+  Do not use `toHttpException()` or a `@Catch(HttpClientError)` filter: they produce Nest
+  `HttpException`s and would bypass `ApiError`.
+
+- **Tests:** unit tests of a service stub `fetch` instead of mocking the client:
+  `HttpClientModule.forRoot({ fetch })` with `fetch.mockResolvedValueOnce(Response.json(...))`. Use a
+  fresh `Response` per call, since a body can only be read once. The client keeps its base URL,
+  headers and retry behavior under the stub, so the test exercises them.

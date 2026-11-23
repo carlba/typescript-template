@@ -311,9 +311,13 @@ template for future CLI apps.
 
 _Applies whenever any package needs to make outbound HTTP calls._
 
-- Use [`got`](https://github.com/sindresorhus/got) as the HTTP client.
+- In a NestJS app, use Nest's own client, `@nestjs/http-client`, and not `got`. See "HTTP client" in
+  `.claude/rules/backend-nest.md`. Everything else in this section is for non-Nest packages.
 
-- Do not use `fetch`, `axios`, or `node-fetch`.
+- Elsewhere, use [`got`](https://github.com/sindresorhus/got) as the HTTP client.
+
+- Do not use `fetch`, `axios`, or `node-fetch` directly. (`@nestjs/http-client` is built on `fetch`,
+  but you use its API, not `fetch`.)
 
 - Prefer `got.extend()` for shared base URLs, headers, and retry logic.
 
